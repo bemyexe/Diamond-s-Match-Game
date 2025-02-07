@@ -1,6 +1,7 @@
 import {Container} from 'pixi.js';
 import {Field} from './Field';
 import {TileFactory} from './Tile/TileFactory';
+import {Tile} from './Tile/Tile';
 
 const BOARD = {
   rows: 6,
@@ -20,6 +21,17 @@ export class Board extends Container {
 
     this.create();
     this.ajustFieldsPosition();
+  }
+
+  public swap(tile1: Tile, tile2: Tile) {
+    const tile1Field = tile1.field;
+    const tile2Field = tile2.field;
+
+    tile1Field.tile = tile2;
+    tile2.field = tile1Field;
+
+    tile2Field.tile = tile1;
+    tile1.field = tile2Field;
   }
 
   private create() {
@@ -55,6 +67,8 @@ export class Board extends Container {
 
   private createTile(field: Field) {
     const tile = TileFactory.generateTile();
+    tile.sprite.interactive = true;
+    tile.sprite.on('pointerdown', () => this.emit('tile-touch-start', tile));
     field.setTile(tile);
     this.addChild(tile.sprite);
   }
