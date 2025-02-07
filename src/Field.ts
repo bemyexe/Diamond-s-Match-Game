@@ -1,9 +1,11 @@
 import {Sprite} from 'pixi.js';
+import {Tile} from './Tile/Tile';
 
 export class Field {
   private row: number;
   private col: number;
   private _sprite: Sprite;
+  public tile!: Tile;
   constructor(row: number, col: number) {
     this.row = row;
     this.col = col;
@@ -21,5 +23,11 @@ export class Field {
       x: this.col * this._sprite.width,
       y: this.row * this._sprite.height,
     };
+  }
+
+  public setTile(tile: Tile) {
+    this.tile = tile;
+    tile.field = this;
+    tile.setPosition(this.position);
   }
 }

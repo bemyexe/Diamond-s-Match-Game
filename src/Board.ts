@@ -1,5 +1,6 @@
 import {Container} from 'pixi.js';
 import {Field} from './Field';
+import {TileFactory} from './Tile/TileFactory';
 
 const BOARD = {
   rows: 6,
@@ -23,6 +24,7 @@ export class Board extends Container {
 
   private create() {
     this.createFields();
+    this.createTiles();
   }
 
   private createFields() {
@@ -45,5 +47,15 @@ export class Board extends Container {
     const height = fieldWidth * this.rows;
     this.x = (window.innerWidth - width) / 2 + fieldWidth / 2;
     this.y = (window.innerHeight - height) / 2 + fieldWidth / 2;
+  }
+
+  private createTiles() {
+    this.fields.forEach((field) => this.createTile(field));
+  }
+
+  private createTile(field: Field) {
+    const tile = TileFactory.generateTile();
+    field.setTile(tile);
+    this.addChild(tile.sprite);
   }
 }
